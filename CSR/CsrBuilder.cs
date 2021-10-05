@@ -1,4 +1,6 @@
 using Org.BouncyCastle.Asn1;
+using Org.BouncyCastle.Asn1.Pkcs;
+using Org.BouncyCastle.Asn1.X509;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Generators;
 using Org.BouncyCastle.Crypto.Operators;
@@ -11,13 +13,13 @@ namespace X509.CSR;
 public class CsrBuilder
 {
     private readonly Csr _csr = new();
-    
+
     public CsrBuilder SetSubject(Subject subject)
     {
         _csr.Subject = subject;
         return this;
     }
-    
+
     public CsrBuilder SetCommonName(string cn)
     {
         _csr.Subject.CommonName = cn;
@@ -33,9 +35,8 @@ public class CsrBuilder
 
     public Pkcs10CertificationRequest Build(string algorithm, AsymmetricCipherKeyPair keyPair)
     {
-        var signatureFactory = new Asn1SignatureFactory(algorithm, keyPair.Private);
-        var attributes = new Asn1EncodableVector(_csr.Attributes.Select(a => a.GetEncoded()).ToArray());
-        return new Pkcs10CertificationRequest(signatureFactory, _csr.Subject.AsX509Name, keyPair.Public, new DerSet(attributes), keyPair.Private);
+        var attributes = Asn1EncodableVector.FromEnumerable(_csr.Attributes.Select(a => a.GetEncoded()));
+        return new Pkcs10CertificationRequest(algorithm, _csr.Subject.AsX509Name, keyPair.Public,
+            new DerSet(attributes), keyPair.Private);
     }
-
 }
