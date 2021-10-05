@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using RegistrationAuthority.Data;
 using X509.CSR;
+using X509.RegistrationAuthority.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Certificate;
+namespace X509.Certificate;
 
 public static class ServiceCollectionExtensions
 {

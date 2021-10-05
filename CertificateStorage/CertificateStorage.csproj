@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
+        <AssemblyName>X509.CertificateStorage</AssemblyName>
     </PropertyGroup>
 
     <ItemGroup>

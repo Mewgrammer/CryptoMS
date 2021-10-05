@@ -24,7 +24,6 @@ public class CsrServiceTests
         var csr = _csrService.CreateCsr("TEST_CSR", attributes);
         
         Assert.NotNull(csr);
-        Assert.Equal(csr.SignatureAlgorithm.Algorithm.Id, SignatureAlgorithms.Ed25519);
         var base64 = Encoding.UTF8.GetString(csr.ToBase64());
         Assert.NotEmpty(base64);
         var pemBase64 = csr.ToBase64Pem();

@@ -8,7 +8,7 @@ public static class CsrExtensions
 {
     public static byte[] ToBase64(this Pkcs10CertificationRequest csr)
     {
-        return Base64.Encode(csr.GetCertificationRequestInfo().GetDerEncoded());
+        return Base64.Encode(csr.GetEncoded());
     }
     
     public static byte[] ToBase64Pem(this Pkcs10CertificationRequest csr)

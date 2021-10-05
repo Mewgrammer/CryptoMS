@@ -1,6 +1,6 @@
-using Certificate;
 using CertificateAuthority.Data;
 using Microsoft.EntityFrameworkCore;
+using X509.Certificate;
 using X509.CSR;
 
 var builder = WebApplication.CreateBuilder(args);

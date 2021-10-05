@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
+        <RootNamespace>X.509.CertificateAuthority</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

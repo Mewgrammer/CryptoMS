@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace RegistrationAuthority.Data.Entity;
+namespace X509.RegistrationAuthority.Data.Entity;
 
 public class CsrEntity
 {

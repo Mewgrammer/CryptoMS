@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using RegistrationAuthority.Data.Entity;
+using X509.RegistrationAuthority.Data.Entity;
 
-namespace RegistrationAuthority.Data;
+namespace X509.RegistrationAuthority.Data;
 
 public class RaContext : DbContext
 {
