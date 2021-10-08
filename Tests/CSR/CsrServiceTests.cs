@@ -4,6 +4,7 @@ using X509.CSR;
 using X509.CSR.Extensions;
 using X509.CSR.Models;
 using X509.CSR.Models.Constants;
+using X509.CSR.Services;
 using Xunit;
 
 namespace Tests.CSR;
