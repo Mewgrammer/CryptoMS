@@ -1,53 +1,53 @@
 using AutoMapper;
-using Confluent.Kafka;
-using Confluent.SchemaRegistry;
-using Confluent.SchemaRegistry.Serdes;
 using Contracts;
-using Contracts.Messages;
+using Contracts.Messaging;
 using CsrStorage.Data.Entities;
 using CsrStorage.Models.Configuration;
 using CsrStorage.Services;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
+using RabbitMQ.Client;
 
 namespace CsrStorage.Messaging;
 
 public class CsrProducer
 {
     private readonly IMapper _mapper;
+    private readonly IOptions<MessagingConfig> _config;
     private readonly ILogger<CsrProducer> _logger;
-    private readonly IProducer<Null, string> _producer;
+    private IModel? _channel;
 
     public CsrProducer(CsrStorageService csrStorageService, IMapper mapper, IOptions<MessagingConfig> config,
         ILogger<CsrProducer> logger)
     {
         _mapper = mapper;
+        _config = config;
         _logger = logger;
-        var schemaRegistry =
-            new CachedSchemaRegistryClient(new SchemaRegistryConfig {Url = config.Value.SchemaRegistryUrl});
-        _producer = new ProducerBuilder<Null, string>(new ProducerConfig
-            {
-                BootstrapServers = config.Value.BootstrapServers,
-                ClientId = config.Value.ClientId
-            })
-            .SetErrorHandler((_, e) => _logger.LogError($"Error: {e.Reason}"))
-            .Build();
+        Connect();
         csrStorageService.CsrAdded += OnCsrAdded;
         csrStorageService.CsrRemoved += OnCsrRemoved;
     }
 
-    private async void OnCsrAdded(CertificateRequestEntity csr)
+    private void Connect()
     {
-        var messageValue = _mapper.Map<CertificateRequestMessageBody>(csr);
-        await _producer.ProduceAsync(Topics.CsrAdded,
-            new Message<Null, string> {Value = JsonConvert.SerializeObject(messageValue)});
+        var factory = new ConnectionFactory {HostName = _config.Value.Host};
+        var connection = factory.CreateConnection();
+        _channel = connection.CreateModel();
+        var queueConfig = _config.Value.Queue;
+        _channel.QueueDeclare(queueConfig.Name, queueConfig.Durable, queueConfig.Exclusive,
+            queueConfig.AutoDelete);
     }
 
-    private async void OnCsrRemoved(CertificateRequestEntity csr)
+    private void OnCsrAdded(CertificateRequestEntity csr)
     {
         var messageValue = _mapper.Map<CertificateRequestMessageBody>(csr);
-        var deliveryResult =await _producer.ProduceAsync(Topics.CsrRemoved,
-            new Message<Null, string> {Value = JsonConvert.SerializeObject(messageValue)});
-        _logger.LogDebug($"Produced message on {deliveryResult.Topic}");
+        _channel?.PublishJson("", _config.Value.Queue.Name, messageValue);
+        _logger.LogDebug($"Sent CsrAdded message on {Topics.CsrAdded}");
+    }
+
+    private void OnCsrRemoved(CertificateRequestEntity csr)
+    {
+        var messageValue = _mapper.Map<CertificateRequestMessageBody>(csr);
+        _channel?.PublishJson(Topics.CsrRemoved, "csr-storage", messageValue);
+        _logger.LogDebug($"Sent CsrRemoved message on {Topics.CsrRemoved}");
     }
 }

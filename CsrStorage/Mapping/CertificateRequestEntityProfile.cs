@@ -1,6 +1,6 @@
 using AutoMapper;
 using Contracts.CsrStorage;
-using Contracts.Messages;
+using Contracts.Messaging;
 using CsrStorage.Data.Entities;
 
 namespace CsrStorage.Mapping;

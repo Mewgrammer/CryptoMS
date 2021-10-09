@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace Contracts.Messages;
+namespace Contracts.Messaging;
 
 public class CertificateRequestMessageBody
 {

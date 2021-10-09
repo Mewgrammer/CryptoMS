@@ -16,12 +16,10 @@ public class CsrProcessingService
     public void Start()
     {
         _logger.LogInformation("Csr Processor starting...");
-        _csrConsumer.Start();
     }
 
     public void Stop()
     {
         _logger.LogInformation("Csr Processor stopping...");
-        _csrConsumer.Stop();
     }
 }
