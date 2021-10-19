@@ -33,6 +33,7 @@
     <ItemGroup>
       <ProjectReference Include="..\Certificate\Certificate.csproj" />
       <ProjectReference Include="..\CSR\CSR.csproj" />
+      <ProjectReference Include="..\Shared\Shared.csproj" />
     </ItemGroup>
 
 </Project>

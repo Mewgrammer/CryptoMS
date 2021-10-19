@@ -32,6 +32,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Certificate\Certificate.csproj" />
+      <ProjectReference Include="..\Shared\Shared.csproj" />
     </ItemGroup>
 
 </Project>

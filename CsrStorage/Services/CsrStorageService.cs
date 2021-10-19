@@ -8,11 +8,9 @@ public class CsrStorageService
 {
     private readonly IServiceScopeFactory _scopeFactory;
     private readonly ILogger<CsrStorageService> _logger;
-
     public event Action<CertificateRequestEntity>? CsrAdded;
     public event Action<CertificateRequestEntity>? CsrRemoved ;
-
-
+    
     public CsrStorageService(IServiceScopeFactory scopeFactory, ILogger<CsrStorageService> logger)
     {
         _scopeFactory = scopeFactory;

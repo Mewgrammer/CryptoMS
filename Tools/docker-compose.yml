@@ -1,5 +1,12 @@
 version: '3.8'
 services:
+  user-mgmt:
+    build:
+      context: ../
+      dockerfile: 'UserManagement/Dockerfile'
+    environment:
+      ASPNETCORE_ENVIRONMENT: Docker
+  
   csr-storage:
     build:
       context: ../
@@ -47,8 +54,21 @@ services:
       - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
       - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
             
+  user-db:
+    container_name: pg_user
+    profiles: [ "db" ]
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: user
+    ports:
+      - "5430:5432"
+        
   ca-db:
     container_name: pg_ca
+    profiles: [ "db" ]
     image: postgres
     restart: always
     environment:
@@ -60,6 +80,7 @@ services:
     
   cert-db:
     container_name: pg_cert
+    profiles: [ "db" ]
     image: postgres
     restart: always
     environment:
@@ -71,6 +92,7 @@ services:
   
   csr-db:
     container_name: pg_csr
+    profiles: [ "db" ]
     image: postgres
     restart: always
     environment:
@@ -82,6 +104,7 @@ services:
       
   pgadmin:
     container_name: pgadmin
+    profiles: [ "db" ]
     image: dpage/pgadmin4
     restart: always
     environment:

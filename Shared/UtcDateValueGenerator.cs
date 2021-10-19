@@ -9,6 +9,5 @@ public class UtcDateValueGenerator : ValueGenerator
     {
         return DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc);
     }
-
-    public override bool GeneratesTemporaryValues { get; }
+    public override bool GeneratesTemporaryValues => false;
 }

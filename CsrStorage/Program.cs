@@ -1,4 +1,5 @@
 using System.Reflection;
+using Contracts.Extensions;
 using Contracts.Swagger;
 using CsrStorage.Data;
 using CsrStorage.Messaging;
@@ -17,7 +18,6 @@ var configuration = new ConfigurationBuilder()
     .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", true, true)
     .AddEnvironmentVariables()
     .Build();
-
 builder.Services.AddLogging();
 builder.Services.Configure<CsrStorageConfig>(configuration);
 builder.Services.Configure<MessagingConfig>(configuration.GetSection(nameof(CsrStorageConfig.Messaging)));
@@ -53,16 +53,17 @@ var app = builder
 
 if (app.Environment.IsDevelopment())
 {
+    app.MigrateDatabase<CsrDbContext>();
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "CryptoMS v1");
-        
     });
 }
 
 app.UseAuthorization();
 app.MapControllers();
+
 
 var csrProducer = app.Services.GetService<CsrProducer>(); // Start the Producer
 var csrStorage = app.Services.GetService<CsrStorageService>();

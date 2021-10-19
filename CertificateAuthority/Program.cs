@@ -1,4 +1,5 @@
 using CertificateAuthority.Data;
+using Contracts.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using X509.Certificate;
@@ -30,6 +31,7 @@ var app = builder
 
 if (app.Environment.IsDevelopment())
 {
+    app.MigrateDatabase<CaContext>();
     app.UseSwagger();
     app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "CryptoMS v1"));
 }
