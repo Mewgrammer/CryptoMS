@@ -8,6 +8,7 @@ using CsrStorage.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using UserManagement.Extensions;
 using X509.CSR;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -34,7 +35,8 @@ builder.Services.AddEntityFrameworkNpgsql()
         .EnableDetailedErrors()
     );
 
-builder.Services.AddControllers();
+builder.Services.AddDefaultJwtAuthentication(configuration.GetSection("Jwt"));
+builder.Services.AddControllersWithHttpExceptions();
 builder.Services.AddApiVersioning(config =>
 {
     config.DefaultApiVersion = new ApiVersion(1, 0);
@@ -43,7 +45,7 @@ builder.Services.AddApiVersioning(config =>
 });
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo {Title = "RA", Version = "v1"});
+    c.SwaggerDoc("v1", new OpenApiInfo {Title = "CSR Storage", Version = "v1"});
     c.OperationFilter<VersionParameterOperationFilter>();
     c.DocumentFilter<VersionParameterDocumentFilter>();
 });
@@ -57,12 +59,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "CryptoMS v1");
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "CSR Storage v1");
     });
 }
 
-app.UseAuthorization();
-app.MapControllers();
+app.UseDefaultJwtAuthentication();
+app.MapControllersWithHttpExceptions();
 
 
 var csrProducer = app.Services.GetService<CsrProducer>(); // Start the Producer

@@ -1,7 +1,9 @@
 using System.Reflection;
+using Contracts.Extensions;
 using CsrProcessor.Messaging;
 using CsrProcessor.Services;
 using Microsoft.OpenApi.Models;
+using UserManagement.Extensions;
 using X509.CSR;
 using CsrStorageConfig = CsrProcessor.Models.Configuration.CsrStorageConfig;
 using MessagingConfig = CsrProcessor.Models.Configuration.MessagingConfig;
@@ -25,7 +27,8 @@ builder.Services.AddSingleton<CsrProcessingService>();
 
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
-builder.Services.AddControllers();
+builder.Services.AddDefaultJwtAuthentication(configuration.GetSection("Jwt"));
+builder.Services.AddControllersWithHttpExceptions();
 builder.Services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "CSR Processor", Version = "v1"}); });
 
 var app = builder
@@ -34,12 +37,11 @@ var app = builder
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "CryptoMS v1"));
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "CSR Processor v1"));
 }
 
-app.UseHttpsRedirection();
-app.UseAuthorization();
-app.MapControllers();
+app.UseDefaultJwtAuthentication();
+app.MapControllersWithHttpExceptions();
 
 var csrProcessing = app.Services.GetService<CsrProcessingService>();    
 csrProcessing?.Start();

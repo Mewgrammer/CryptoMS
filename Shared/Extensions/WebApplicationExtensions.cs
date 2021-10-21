@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.DependencyInjection;
+using Opw.HttpExceptions.AspNetCore;
 
 namespace Contracts.Extensions;
 
@@ -20,4 +21,13 @@ public static class ApplicationExtensions
         var migrator = dbContext.Database.GetService<IMigrator>();
         migrator.Migrate();
     } 
+    
+    public static ControllerActionEndpointConventionBuilder MapControllersWithHttpExceptions(this WebApplication app)
+    {
+        app.UseHttpExceptions();
+        return app.MapControllers();
+    }
+
+    
+    
 }

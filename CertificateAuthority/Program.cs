@@ -2,6 +2,7 @@ using CertificateAuthority.Data;
 using Contracts.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using UserManagement.Extensions;
 using X509.Certificate;
 using X509.CSR;
 
@@ -19,11 +20,13 @@ builder.Services.AddLogging();
 builder.Services.AddX509Csr();
 builder.Services.AddX509Certificate();
 
+builder.Services.AddDefaultJwtAuthentication(configuration.GetSection("Jwt"));
+
 builder.Services.AddDbContext<CaContext>(options =>
     options.UseNpgsql(configuration.GetConnectionString("CaContext"))
         .UseSnakeCaseNamingConvention());
 
-builder.Services.AddControllers();
+builder.Services.AddControllersWithHttpExceptions();
 builder.Services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "CA", Version = "v1"}); });
 
 var app = builder
@@ -33,9 +36,8 @@ if (app.Environment.IsDevelopment())
 {
     app.MigrateDatabase<CaContext>();
     app.UseSwagger();
-    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "CryptoMS v1"));
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "CA v1"));
 }
 
-app.UseHttpsRedirection();
-app.UseAuthorization();
-app.MapControllers();
+app.UseDefaultJwtAuthentication();
+app.MapControllersWithHttpExceptions();
