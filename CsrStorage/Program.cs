@@ -1,4 +1,5 @@
 using System.Reflection;
+using Contracts.Communication;
 using Contracts.Extensions;
 using Contracts.Swagger;
 using CsrStorage.Data;
@@ -8,7 +9,6 @@ using CsrStorage.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using UserManagement.Extensions;
 using X509.CSR;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,14 +20,16 @@ var configuration = new ConfigurationBuilder()
     .AddEnvironmentVariables()
     .Build();
 builder.Services.AddLogging();
+builder.Services.AddOptions();
 builder.Services.Configure<CsrStorageConfig>(configuration);
 builder.Services.Configure<MessagingConfig>(configuration.GetSection(nameof(CsrStorageConfig.Messaging)));
 
-builder.Services.AddX509Csr();
 builder.Services.AddSingleton<CsrProducer>();
 builder.Services.AddSingleton<CsrStorageService>();
-
+builder.Services.AddX509Csr();
+builder.Services.AddCommunications(Assembly.GetExecutingAssembly());
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
 builder.Services.AddEntityFrameworkNpgsql()
     .AddDbContext<CsrDbContext>(options =>
     options.UseNpgsql(configuration.GetConnectionString("CsrContext"))
@@ -35,8 +37,8 @@ builder.Services.AddEntityFrameworkNpgsql()
         .EnableDetailedErrors()
     );
 
-builder.Services.AddDefaultJwtAuthentication(configuration.GetSection("Jwt"));
 builder.Services.AddControllersWithHttpExceptions();
+builder.Services.AddMicroserviceAuthentication(configuration.GetSection("Auth"));
 builder.Services.AddApiVersioning(config =>
 {
     config.DefaultApiVersion = new ApiVersion(1, 0);
@@ -63,7 +65,6 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-app.UseDefaultJwtAuthentication();
 app.MapControllersWithHttpExceptions();
 
 

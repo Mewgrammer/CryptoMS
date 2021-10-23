@@ -1,4 +1,4 @@
-using Contracts.Messaging;
+using Contracts.Communication.Messaging;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;

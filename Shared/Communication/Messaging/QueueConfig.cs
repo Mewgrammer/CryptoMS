@@ -1,4 +1,4 @@
-namespace Contracts.Messaging;
+namespace Contracts.Communication.Messaging;
 
 public class QueueConfig
 {

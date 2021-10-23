@@ -1,63 +1,54 @@
-using Contracts;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using UserManagement.Data.Entity;
-using UserManagement.Helpers;
-using UserManagement.Models.Configuration;
 
 namespace UserManagement.Data;
 
-public sealed class UserDbContext : DbContext
+public class UserDbContext : IdentityDbContext<User, UserRole, Guid>
 {
-    private readonly IOptions<DefaultAdminConfiguration> _adminConfig;
-    public DbSet<User> Users { get; set; }
-
-    public UserDbContext(DbContextOptions<UserDbContext> options, IOptions<DefaultAdminConfiguration> adminConfig)
+    public UserDbContext(DbContextOptions<UserDbContext> options)
         : base(options)
+    { }
+    
+    protected override void OnModelCreating(ModelBuilder builder)
     {
-        _adminConfig = adminConfig;
-        Database.Migrate();
-    }
+        base.OnModelCreating(builder);
+        builder.Entity<User>(entity =>
+        {
+            entity.HasIndex(u => u.UserName)
+                .IsUnique();
+            entity.ToTable("users");         
+        });
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<User>()
-            .HasIndex(c => c.Name, "idx_user_name")
-            .IsUnique();
+        builder.Entity<UserRole>(entity =>
+        {
+            entity.ToTable("roles");
+        });
+        builder.Entity<IdentityUserRole<Guid>>(entity =>
+        {
+            entity.ToTable("user_roles");
+        });
 
-        modelBuilder.Entity<User>()
-            .HasKey(c => c.Id);
+        builder.Entity<IdentityUserClaim<Guid>>(entity =>
+        {
+            entity.ToTable("user_claims");
+        });
 
-        modelBuilder
-            .Entity<User>()
-            .Property(c => c.Id)
-            .ValueGeneratedOnAdd();
+        builder.Entity<IdentityUserLogin<Guid>>(entity =>
+        {
+            entity.ToTable("user_logins");
+        });
 
-        modelBuilder.Entity<User>()
-            .Property(c => c.CreatedAt)
-            .HasValueGenerator<UtcDateValueGenerator>()
-            .ValueGeneratedOnAdd();
+        builder.Entity<IdentityRoleClaim<Guid>>(entity =>
+        {
+            entity.ToTable("role_claims");
+        });
 
-        modelBuilder.Entity<User>()
-            .Property(c => c.UpdatedAt)
-            .HasValueGenerator<UtcDateValueGenerator>()
-            .ValueGeneratedOnUpdate();
+        builder.Entity<IdentityUserToken<Guid>>(entity =>
+        {
+            entity.ToTable("user_tokens");
 
-        modelBuilder.Entity<User>()
-            .HasMany(e => e.Roles)
-            .WithMany(r => r.Users);
-        
-        modelBuilder.Entity<User>()
-            .HasData(new User { Id = Guid.NewGuid(), Name = _adminConfig.Value.Name, Password = new PasswordHasher().Hash(_adminConfig.Value.Password)} );
-
-
-        modelBuilder.Entity<UserRole>()
-            .HasKey(r => r.Name);
-        
-        modelBuilder.Entity<UserRole>()
-            .Property(r => r.CreatedAt)
-            .HasValueGenerator<UtcDateValueGenerator>()
-            .ValueGeneratedOnAdd();
-
+        });
     }
 }

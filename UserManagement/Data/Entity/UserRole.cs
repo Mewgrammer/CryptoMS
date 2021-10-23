@@ -1,11 +1,5 @@
-using UserManagement.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace UserManagement.Data.Entity;
 
-public class UserRole
-{
-    public string Name { get; set; }
-    public DateTime CreatedAt { get; set; }
-    
-    public List<User> Users { get; set; }
-}
+public class UserRole : IdentityRole<Guid> { }

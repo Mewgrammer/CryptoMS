@@ -8,16 +8,23 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="FluentValidation" Version="10.3.3" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.0-rc.1.21452.10" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.0-rc.1.21452.10" />
-      <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-      <PackageReference Include="RabbitMQ.Client" Version="6.2.2" />
-      <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.2.2" />
+        <PackageReference Include="FluentValidation.AspNetCore" Version="10.3.4" />
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="10.3.4" />
+        <PackageReference Include="FluentValidationExtensions.AutoMapper" Version="1.0.0" />
+        <PackageReference Include="MediatR" Version="9.0.0" />
+        <PackageReference Include="MediatR.Extensions.FluentValidation.AspNetCore" Version="1.2.0" />
+        <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.0-rc.2.21480.10" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.0-rc.1.21452.10" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.0-rc.1.21452.10" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+        <PackageReference Include="RabbitMQ.Client" Version="6.2.2" />
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.2.2" />
+        <PackageReference Include="Opw.HttpExceptions.AspNetCore" Version="3.0.2" />
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Types\DTO" />
+        <Folder Include="Types\DTO" />
     </ItemGroup>
 
 </Project>

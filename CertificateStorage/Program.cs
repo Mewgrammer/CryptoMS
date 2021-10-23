@@ -2,7 +2,6 @@ using CertificateStorage.Data;
 using Contracts.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using UserManagement.Extensions;
 using X509.Certificate;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,7 +21,6 @@ builder.Services.AddDbContext<CertStoreContext>(options =>
     options.UseNpgsql(configuration.GetConnectionString("CertStoreContext"))
         .UseSnakeCaseNamingConvention());
 
-builder.Services.AddDefaultJwtAuthentication(configuration.GetSection("Jwt"));
 builder.Services.AddControllersWithHttpExceptions();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -38,5 +36,4 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Certificate Storage v1"));
 }
 
-app.UseDefaultJwtAuthentication();
 app.MapControllersWithHttpExceptions();

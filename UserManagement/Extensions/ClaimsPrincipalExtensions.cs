@@ -5,12 +5,6 @@ namespace UserManagement.Extensions;
 
 public static class ClaimsPrincipalExtensions
 {
-    
-    public static bool IsAdmin(this ClaimsPrincipal principal)
-    {
-        return principal.IsInRole(UserRoleNames.Admin);
-    }
-
     public static IEnumerable<string> UserRoles(this ClaimsPrincipal principal)
     {
         return principal.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value);

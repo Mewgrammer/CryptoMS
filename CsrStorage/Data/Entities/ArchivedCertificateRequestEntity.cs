@@ -1,5 +1,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
+namespace CsrStorage.Data.Entities;
+
 public class ArchivedCertificateRequestEntity
 {
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

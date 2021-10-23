@@ -3,7 +3,6 @@ using Contracts.Extensions;
 using Contracts.Swagger;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
-using UserManagement.Extensions;
 using X509.CSR;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,7 +19,6 @@ builder.Services.AddLogging();
 builder.Services.AddX509Csr();
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
-builder.Services.AddDefaultJwtAuthentication(configuration.GetSection("Jwt"));
 builder.Services.AddControllersWithHttpExceptions();
 builder.Services.AddApiVersioning(config =>
 {
@@ -47,8 +45,6 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-app.UseDefaultJwtAuthentication();
 app.MapControllersWithHttpExceptions();
-
 
 app.Run();

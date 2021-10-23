@@ -1,6 +1,6 @@
 using AutoMapper;
 using Contracts;
-using Contracts.Messaging;
+using Contracts.Communication.Messaging;
 using CsrStorage.Data.Entities;
 using CsrStorage.Models.Configuration;
 using CsrStorage.Services;
@@ -37,14 +37,14 @@ public class CsrProducer
             queueConfig.AutoDelete);
     }
 
-    private void OnCsrAdded(CertificateRequestEntity csr)
+    private void OnCsrAdded(CsrEntity csr)
     {
         var messageValue = _mapper.Map<CertificateRequestMessageBody>(csr);
         _channel?.PublishJson("", _config.Value.Queue.Name, messageValue);
         _logger.LogDebug($"Sent CsrAdded message on {Topics.CsrAdded}");
     }
 
-    private void OnCsrRemoved(CertificateRequestEntity csr)
+    private void OnCsrRemoved(CsrEntity csr)
     {
         var messageValue = _mapper.Map<CertificateRequestMessageBody>(csr);
         _channel?.PublishJson(Topics.CsrRemoved, "csr-storage", messageValue);

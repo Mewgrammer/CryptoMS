@@ -1,6 +1,6 @@
 using AutoMapper;
-using Contracts.CsrStorage;
-using Contracts.Messaging;
+using Contracts.Communication.Contracts;
+using Contracts.Communication.Messaging;
 using CsrStorage.Data.Entities;
 
 namespace CsrStorage.Mapping;
@@ -9,7 +9,7 @@ public class CertificateRequestEntityProfile : Profile
 {
     public CertificateRequestEntityProfile()
     {
-        CreateMap<CertificateRequestEntity, CertificateRequestDto>();
-        CreateMap<CertificateRequestEntity, CertificateRequestMessageBody>();
+        CreateMap<CsrEntity, CsrResponse>();
+        CreateMap<CsrEntity, CertificateRequestMessageBody>();
     }
 }

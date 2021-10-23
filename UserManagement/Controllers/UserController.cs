@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using UserManagement.Data.Entity;
 using UserManagement.Extensions;
 using UserManagement.Models;
 using UserManagement.Models.DTO;
@@ -12,11 +14,11 @@ namespace UserManagement.Controllers;
 [Authorize(Roles = UserRoleNames.Admin)]
 public class UserController : ControllerBase
 {
-    private readonly UserService _userService;
+    private readonly UserManager<User> _userManager;
 
-    public UserController(UserService userService)
+    public UserController(UserManager<User> userManager)
     {
-        _userService = userService;
+        _userManager = userManager;
     }
 
     [HttpGet]
@@ -32,6 +34,7 @@ public class UserController : ControllerBase
     [HttpDelete("{id}")]
     public async Task DeleteUser(Guid id)
     {
-        await _userService.RemoveUser(id);
+        var toDelete = await _userManager.FindByIdAsync(id.ToString());
+        await _userManager.DeleteAsync(toDelete);
     }
 }

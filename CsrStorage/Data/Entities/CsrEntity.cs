@@ -3,7 +3,7 @@ using NpgsqlTypes;
 
 namespace CsrStorage.Data.Entities;
 
-public class CertificateRequestEntity
+public class CsrEntity
 {
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; }

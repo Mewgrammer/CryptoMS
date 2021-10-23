@@ -1,7 +1,9 @@
-﻿using AutoMapper;
-using Contracts.CsrStorage;
-using CsrStorage.Services;
+﻿using Contracts.Communication.Commands;
+using Contracts.Communication.Contracts;
+using Contracts.Communication.Queries;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Opw.HttpExceptions;
 
 namespace CsrStorage.Controllers
 {
@@ -10,13 +12,11 @@ namespace CsrStorage.Controllers
     [ApiController]
     public class StorageController : ControllerBase
     {
-        private readonly CsrStorageService _storage;
-        private readonly IMapper _mapper;
+        private readonly IMediator _mediator;
 
-        public StorageController(CsrStorageService storage, IMapper mapper)
+        public StorageController(IMediator mediator)
         {
-            _storage = storage;
-            _mapper = mapper;
+            _mediator = mediator;
         }
 
         /// <summary>
@@ -26,10 +26,9 @@ namespace CsrStorage.Controllers
         /// <response code="200">Returns all stored CSRs</response>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IEnumerable<CertificateRequestDto>> Get()
+        public async Task<IEnumerable<CsrResponse>> Get()
         {
-            var entities = await _storage.Find();
-            return entities.Select(csr => _mapper.Map<CertificateRequestDto>(csr));
+            return await _mediator.Send(new CsrCollectionQuery());
         }
 
         /// <summary>
@@ -42,16 +41,15 @@ namespace CsrStorage.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<CertificateRequestDto?> GetById(Guid id)
+        public async Task<CsrResponse> GetById(Guid id)
         {
             try
             {
-                return _mapper.Map<CertificateRequestDto>(await _storage.FindOne(id));
+                return await _mediator.Send(new CsrByIdQuery {Id = id});
             }
             catch (InvalidOperationException e)
             {
-                Response.StatusCode = StatusCodes.Status404NotFound;
-                return null;
+                throw new NotFoundException("Csr with id does not exist", e);
             }
         }
 
@@ -64,9 +62,9 @@ namespace CsrStorage.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<CertificateRequestDto> Post([FromBody] string csr)
+        public async Task<CsrResponse> Post([FromBody] string csr)
         {
-            return _mapper.Map<CertificateRequestDto>(await _storage.AddCsr(csr));
+            return await _mediator.Send(new StoreCsrCommand {Csr = csr});
         }
 
         /// <summary>
@@ -82,11 +80,11 @@ namespace CsrStorage.Controllers
         {
             try
             {
-                await _storage.DeleteCsr(id);
+                await _mediator.Send(new DeleteCsrCommand {Id = id});
             }
             catch (InvalidOperationException e)
             {
-                Response.StatusCode = StatusCodes.Status404NotFound;
+                throw new NotFoundException("Csr with id does not exist", e);
             }
         }
     }

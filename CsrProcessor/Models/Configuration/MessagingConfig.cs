@@ -1,4 +1,4 @@
-using Contracts.Messaging;
+using Contracts.Communication.Messaging;
 
 namespace CsrProcessor.Models.Configuration;
 

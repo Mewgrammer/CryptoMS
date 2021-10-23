@@ -1,9 +1,11 @@
-using System.Security.Claims;
+using Contracts.Communication.Commands;
+using Contracts.Communication.Contracts;
+using Contracts.Communication.Queries;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using UserManagement.Extensions;
 using UserManagement.Models.DTO;
-using UserManagement.Service;
+using UserInfoResponse = Contracts.Communication.Contracts.UserInfoResponse;
 
 namespace UserManagement.Controllers;
 
@@ -11,47 +13,40 @@ namespace UserManagement.Controllers;
 [Route("api/v{version:apiVersion}/auth")]
 public class AuthController : ControllerBase
 {
-    private readonly TokenService _tokenService;
-    private readonly AuthService _authService;
+    private readonly IMediator _mediator;
 
-    public AuthController(TokenService tokenService, AuthService authService)
+    public AuthController(IMediator mediator)
     {
-        _tokenService = tokenService;
-        _authService = authService;
+        _mediator = mediator;
     }
 
     [HttpGet]
-    public UserInfoResponse GetUserInfo()
+    public async Task<UserInfoResponse> GetUserInfo()
     {
-        return new UserInfoResponse
-        {
-            Name = HttpContext.User.Username(),
-            Roles = HttpContext.User.UserRoles(),
-            ValidUntil = DateTimeOffset.FromUnixTimeSeconds(
-                long.Parse(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "exp")?.Value ?? "0")
-            ).DateTime
-        };
+        return await _mediator.Send(new UserInfoQuery());
     }
 
     [AllowAnonymous]
     [HttpPost("login")]
-    public async Task<TokenResponse> Login([FromBody] UserRequest userRequest)
+    public async Task<UserTokenResponse> Login([FromBody] UserRequest userRequest)
     {
-        var loggedInUser = await _authService.Login(userRequest.Name, userRequest.Password);
-        return new TokenResponse
+        var command = new LoginUserCommand
         {
-            Token = _tokenService.BuildToken(loggedInUser)
+            UserName = userRequest.Name,
+            Password = userRequest.Password
         };
+        return await _mediator.Send(command);
     }
 
     [AllowAnonymous]
     [HttpPost("register")]
-    public async Task<TokenResponse> Register([FromBody] UserRequest userRequest)
+    public async Task<UserTokenResponse> Register([FromBody] UserRequest userRequest)
     {
-        var createdUser = await _authService.Register(userRequest);
-        return new TokenResponse
+        var command = new RegisterUserCommand
         {
-            Token = _tokenService.BuildToken(createdUser)
+            UserName = userRequest.Name,
+            Password = userRequest.Password
         };
+        return await _mediator.Send(command);
     }
 }
