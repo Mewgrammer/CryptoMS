@@ -22,7 +22,7 @@ namespace CsrStorage.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("ArchivedCertificateRequestEntity", b =>
+            modelBuilder.Entity("CsrStorage.Data.Entities.ArchivedCsrEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -48,27 +48,27 @@ namespace CsrStorage.Migrations
                         .HasColumnName("updated_at");
 
                     b.HasKey("Id")
-                        .HasName("pk_archived_certificate_request_entity");
+                        .HasName("pk_archived_csrs");
 
-                    b.ToTable("archived_certificate_request_entity", (string)null);
+                    b.ToTable("archived_csrs", (string)null);
                 });
 
-            modelBuilder.Entity("CsrStorage.Data.Entities.CertificateRequestEntity", b =>
+            modelBuilder.Entity("CsrStorage.Data.Entities.CsrEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<string>("CertificateRequest")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("certificate_request");
-
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
+
+                    b.Property<string>("Csr")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("csr");
 
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnUpdate()
@@ -76,9 +76,13 @@ namespace CsrStorage.Migrations
                         .HasColumnName("updated_at");
 
                     b.HasKey("Id")
-                        .HasName("pk_certificate_request_entity");
+                        .HasName("pk_csrs");
 
-                    b.ToTable("certificate_request_entity", (string)null);
+                    b.HasIndex(new[] { "Csr" }, "idx_csr_csr")
+                        .IsUnique()
+                        .HasDatabaseName("ix_csrs_csr");
+
+                    b.ToTable("csrs", (string)null);
                 });
 #pragma warning restore 612, 618
         }

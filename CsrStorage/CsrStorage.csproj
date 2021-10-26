@@ -31,6 +31,9 @@
         <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.2.2" />
         <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.2.2" />
         <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.2.2" />
+        <PackageReference Include="Serilog.AspNetCore" Version="4.1.1-dev-00229" />
+        <PackageReference Include="Serilog.Extensions.Logging" Version="3.0.2-dev-10289" />
+        <PackageReference Include="Serilog.Sinks.RollingFile" Version="3.3.1-dev-00771" />
     </ItemGroup>
 
     <ItemGroup>

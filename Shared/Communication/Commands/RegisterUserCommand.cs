@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
-using Contracts.Communication.Contracts;
 using MediatR;
+using Shared.Communication.Responses;
 
-namespace Contracts.Communication.Commands;
+namespace Shared.Communication.Commands;
 
 public class RegisterUserCommand : IRequest<UserTokenResponse>
 {

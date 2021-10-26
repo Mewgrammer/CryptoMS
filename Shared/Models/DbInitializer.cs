@@ -1,4 +1,4 @@
-namespace Contracts.Models;
+namespace Shared.Models;
 
 public abstract class DbInitializer
 {

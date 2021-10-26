@@ -1,8 +1,7 @@
 using System.ComponentModel.DataAnnotations;
-using Contracts.Communication.Contracts;
 using MediatR;
 
-namespace Contracts.Communication.Commands;
+namespace Shared.Communication.Commands;
 
 public class DeleteCsrCommand : IRequest
 {

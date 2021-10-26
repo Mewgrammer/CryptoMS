@@ -1,6 +1,6 @@
-using Contracts.Communication.Commands;
 using CsrStorage.Services;
 using MediatR;
+using Shared.Communication.Commands;
 
 namespace CsrStorage.Communication;
 

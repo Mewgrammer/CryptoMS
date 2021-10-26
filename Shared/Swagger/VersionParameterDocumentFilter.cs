@@ -1,7 +1,7 @@
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Contracts.Swagger;
+namespace Shared.Swagger;
 
 public class VersionParameterDocumentFilter : IDocumentFilter
 {

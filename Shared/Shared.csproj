@@ -4,7 +4,7 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <RootNamespace>Contracts</RootNamespace>
+        <RootNamespace>Shared</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -21,10 +21,6 @@
         <PackageReference Include="RabbitMQ.Client" Version="6.2.2" />
         <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.2.2" />
         <PackageReference Include="Opw.HttpExceptions.AspNetCore" Version="3.0.2" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <Folder Include="Types\DTO" />
     </ItemGroup>
 
 </Project>

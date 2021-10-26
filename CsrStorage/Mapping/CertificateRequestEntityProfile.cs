@@ -1,7 +1,7 @@
 using AutoMapper;
-using Contracts.Communication.Contracts;
-using Contracts.Communication.Messaging;
 using CsrStorage.Data.Entities;
+using Shared.Communication.Messaging;
+using Shared.Communication.Responses;
 
 namespace CsrStorage.Mapping;
 

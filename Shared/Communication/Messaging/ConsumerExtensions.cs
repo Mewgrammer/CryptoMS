@@ -2,7 +2,7 @@ using System.Text;
 using Newtonsoft.Json;
 using RabbitMQ.Client.Events;
 
-namespace Contracts.Communication.Messaging;
+namespace Shared.Communication.Messaging;
 
 public static class ConsumerExtensions
 {

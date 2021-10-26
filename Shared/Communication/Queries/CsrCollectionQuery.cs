@@ -1,8 +1,7 @@
-using System.ComponentModel.DataAnnotations;
-using Contracts.Communication.Contracts;
 using MediatR;
+using Shared.Communication.Responses;
 
-namespace Contracts.Communication.Queries;
+namespace Shared.Communication.Queries;
 
 public class CsrCollectionQuery  : IRequest<IEnumerable<CsrResponse>>
 { }

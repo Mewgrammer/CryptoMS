@@ -1,14 +1,14 @@
-using Contracts.Models;
+using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Opw.HttpExceptions.AspNetCore;
+using Shared.Models;
 
-namespace Contracts.Extensions;
+namespace Shared.Extensions;
 
 public static class ServiceCollectionExtensions
 {
@@ -22,26 +22,25 @@ public static class ServiceCollectionExtensions
             });
     }
 
-    public static IServiceCollection AddMicroserviceAuthentication(this IServiceCollection services,
-        IConfiguration config)
+    public static IServiceCollection AddBasicJwtAuth(this IServiceCollection services, JwtConfiguration conf
+        ,
+        bool requireHttpsMetadata = false)
     {
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
-                options.Authority = config.GetValue<string>("Auth:Authority");
+                options.RequireHttpsMetadata = requireHttpsMetadata;
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidateAudience = true,
                     ValidateIssuer = true,
-                    ValidateLifetime = true,
-                    RequireExpirationTime = true,
-                    ValidAudiences = config.GetValue<IEnumerable<string>>("Auth:AllowedAudiences"),
-                    ValidIssuers = config.GetValue<IEnumerable<string>>("Auth:AllowedIssuers")
+                    ValidateAudience = true,
+                    ValidIssuer = conf.Issuer,
+                    ValidAudience = conf.Audience,
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(conf.Secret))
                 };
             });
-        services.AddAuthorization(c => c.FallbackPolicy = new AuthorizationPolicyBuilder()
-            .RequireAuthenticatedUser()
-            .Build());
+        services.AddAuthorization();
         return services;
     }
 }

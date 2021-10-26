@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.ValueGeneration;
 
-namespace Contracts.Helpers;
+namespace Shared.Helpers;
 
 public class UtcDateValueGenerator : ValueGenerator
 {

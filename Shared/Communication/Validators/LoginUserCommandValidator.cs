@@ -1,7 +1,7 @@
-using Contracts.Communication.Commands;
 using FluentValidation;
+using Shared.Communication.Commands;
 
-namespace Contracts.Communication.Validators;
+namespace Shared.Communication.Validators;
 
 public class LoginUserCommandValidator : AbstractValidator<LoginUserCommand>
 {

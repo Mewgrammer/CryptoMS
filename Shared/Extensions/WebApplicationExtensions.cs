@@ -1,12 +1,12 @@
-using Contracts.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.DependencyInjection;
 using Opw.HttpExceptions.AspNetCore;
+using Shared.Models;
 
-namespace Contracts.Extensions;
+namespace Shared.Extensions;
 
 public static class ApplicationExtensions
 {
@@ -42,7 +42,7 @@ public static class ApplicationExtensions
         return app.MapControllers();
     }
     
-    public static IApplicationBuilder MapControllersWithHttpExceptions(this IApplicationBuilder app)
+    public static IApplicationBuilder UseBasicJwtAuth(this IApplicationBuilder app)
     {
         return app.UseAuthorization()
             .UseAuthentication();

@@ -1,7 +1,7 @@
-using Contracts.Communication.Messaging;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using Shared.Communication.Messaging;
 using MessagingConfig = CsrProcessor.Models.Configuration.MessagingConfig;
 
 namespace CsrProcessor.Messaging;

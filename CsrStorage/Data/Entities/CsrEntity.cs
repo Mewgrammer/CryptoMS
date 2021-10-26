@@ -10,5 +10,5 @@ public class CsrEntity
     
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
-    public string CertificateRequest { get; set; }
+    public string Csr { get; set; }
 }

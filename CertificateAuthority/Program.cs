@@ -1,7 +1,7 @@
 using CertificateAuthority.Data;
-using Contracts.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Shared.Extensions;
 using X509.Certificate;
 using X509.CSR;
 

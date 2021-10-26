@@ -21,21 +21,21 @@ public class CsrStorageService
     {
         using var scope = _scopeFactory.CreateScope() ;
         await using var dbContext = scope.ServiceProvider.GetRequiredService<CsrDbContext>();
-        return await dbContext.CertificateRequests.ToListAsync();
+        return await dbContext.Csrs.ToListAsync();
     }
 
     public async Task<CsrEntity> FindOne(Guid id)
     {
         using var scope = _scopeFactory.CreateScope() ;
         await using var dbContext = scope.ServiceProvider.GetRequiredService<CsrDbContext>();
-        return await dbContext.CertificateRequests.SingleAsync(x => x.Id == id);
+        return await dbContext.Csrs.SingleAsync(x => x.Id == id);
     }
 
     public async Task<CsrEntity> AddCsr(string csr)
     {
         using var scope = _scopeFactory.CreateScope() ;
         await using var dbContext = scope.ServiceProvider.GetRequiredService<CsrDbContext>();
-        var csrEntity = new CsrEntity {CertificateRequest = csr};
+        var csrEntity = new CsrEntity {Csr = csr};
         var createdEntity = await dbContext.AddAsync(csrEntity);
         await dbContext.SaveChangesAsync();
         CsrAdded?.Invoke(createdEntity.Entity);
@@ -46,8 +46,8 @@ public class CsrStorageService
     {
         using var scope = _scopeFactory.CreateScope() ;
         await using var dbContext = scope.ServiceProvider.GetRequiredService<CsrDbContext>();
-        var entity = await dbContext.CertificateRequests.SingleAsync(x => x.Id == id);
-        dbContext.CertificateRequests.Remove(entity);
+        var entity = await dbContext.Csrs.SingleAsync(x => x.Id == id);
+        dbContext.Csrs.Remove(entity);
         await dbContext.SaveChangesAsync();
         CsrRemoved?.Invoke(entity);
     }

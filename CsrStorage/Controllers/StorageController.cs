@@ -1,15 +1,17 @@
-﻿using Contracts.Communication.Commands;
-using Contracts.Communication.Contracts;
-using Contracts.Communication.Queries;
-using MediatR;
+﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Opw.HttpExceptions;
+using Shared.Communication.Commands;
+using Shared.Communication.Queries;
+using Shared.Communication.Responses;
 
 namespace CsrStorage.Controllers
 {
+    [ApiController]
     [ApiVersion("1")]
     [Route("api/v{version:apiVersion}/csr/storage")]
-    [ApiController]
+    [Authorize]
     public class StorageController : ControllerBase
     {
         private readonly IMediator _mediator;

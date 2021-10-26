@@ -1,9 +1,9 @@
 version: '3.8'
 services:
-  user-mgmt:
+  auth:
     build:
       context: ../
-      dockerfile: 'UserManagement/Dockerfile'
+      dockerfile: 'Auth/Dockerfile'
     environment:
       ASPNETCORE_ENVIRONMENT: Docker
   

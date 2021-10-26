@@ -1,8 +1,8 @@
 using System.Reflection;
-using Contracts.Extensions;
-using Contracts.Swagger;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
+using Shared.Extensions;
+using Shared.Swagger;
 using X509.CSR;
 
 var builder = WebApplication.CreateBuilder(args);

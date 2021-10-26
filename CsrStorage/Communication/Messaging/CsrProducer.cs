@@ -1,11 +1,11 @@
 using AutoMapper;
-using Contracts;
-using Contracts.Communication.Messaging;
 using CsrStorage.Data.Entities;
 using CsrStorage.Models.Configuration;
 using CsrStorage.Services;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
+using Shared;
+using Shared.Communication.Messaging;
 
 namespace CsrStorage.Messaging;
 

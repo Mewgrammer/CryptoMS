@@ -4,7 +4,7 @@ using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Contracts.Communication;
+namespace Shared.Communication;
 
 public static class CommunicationExtensions
 {

@@ -1,7 +1,7 @@
-using Contracts.Communication.Queries;
 using FluentValidation;
+using Shared.Communication.Queries;
 
-namespace Contracts.Communication.Validators;
+namespace Shared.Communication.Validators;
 
 public class GetUserByIdQueryValidator : AbstractValidator<UserByIdQuery>
 {

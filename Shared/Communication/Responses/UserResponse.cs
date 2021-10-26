@@ -1,3 +1,3 @@
-namespace Contracts.Communication.Contracts;
+namespace Shared.Communication.Responses;
 
 public record UserResponse(string Name);

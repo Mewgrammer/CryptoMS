@@ -1,8 +1,8 @@
 using AutoMapper;
-using Contracts.Communication.Commands;
-using Contracts.Communication.Contracts;
 using CsrStorage.Services;
 using MediatR;
+using Shared.Communication.Commands;
+using Shared.Communication.Responses;
 
 namespace CsrStorage.Communication;
 

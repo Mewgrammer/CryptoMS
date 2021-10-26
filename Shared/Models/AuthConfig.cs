@@ -1,8 +1,6 @@
-namespace Contracts.Models;
+namespace Shared.Models;
 
 public class AuthConfig
 {
     public string AuthorityUrl { get; set; }
-    public IEnumerable<string> AllowedIssuers { get; set; }
-    public IEnumerable<string> AllowedAudiences { get; set; }
 }

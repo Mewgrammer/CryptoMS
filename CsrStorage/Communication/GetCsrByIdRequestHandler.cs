@@ -1,9 +1,9 @@
 using AutoMapper;
-using Contracts.Communication.Contracts;
-using Contracts.Communication.Queries;
 using CsrStorage.Services;
 using MediatR;
 using Opw.HttpExceptions;
+using Shared.Communication.Queries;
+using Shared.Communication.Responses;
 
 namespace CsrStorage.Communication;
 
